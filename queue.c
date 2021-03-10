@@ -168,6 +168,7 @@ void q_reverse(queue_t *q)
  * element, do nothing.
  */
 
+/* pull off the front node of the source and put it in dest */
 void move_node(list_ele_t **destRef, list_ele_t **sourceRef)
 {
     list_ele_t *newNode = *sourceRef;
@@ -181,10 +182,10 @@ void move_node(list_ele_t **destRef, list_ele_t **sourceRef)
 
 list_ele_t *sortedmerge(list_ele_t *a, list_ele_t *b)
 {
-    list_ele_t dummy;
-    list_ele_t *tail = &dummy;
+    list_ele_t tmp;
+    list_ele_t *tail = &tmp;
 
-    dummy.next = NULL;
+    tmp.next = NULL;
 
     while (1) {
         if (a == NULL) {
@@ -203,16 +204,14 @@ list_ele_t *sortedmerge(list_ele_t *a, list_ele_t *b)
         tail = tail->next;
     }
 
-    return dummy.next;
+    return tmp.next;
 }
 
-void frontbacksplit(list_ele_t *head,
-                    list_ele_t **frontref,
-                    list_ele_t **backref)
+void frontbacksplit(list_ele_t *head, list_ele_t **front, list_ele_t **back)
 {
     if (head == NULL || head->next == NULL) {
-        *frontref = head;
-        *backref = NULL;
+        *front = head;
+        *back = NULL;
         return;
     }
 
@@ -227,8 +226,8 @@ void frontbacksplit(list_ele_t *head,
         }
     }
 
-    *frontref = head;
-    *backref = slow->next;
+    *front = head;
+    *back = slow->next;
     slow->next = NULL;
 }
 
