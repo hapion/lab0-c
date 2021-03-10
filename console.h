@@ -31,7 +31,8 @@ typedef void (*setter_function)(int oldval);
 typedef struct PELE param_ele, *param_ptr;
 struct PELE {
     char *name;
-    int *valp;
+    void *valp;
+    int type_size;
     char *documentation;
     /* Function that gets called whenever parameter changes */
     setter_function setter;
@@ -46,7 +47,8 @@ void add_cmd(char *name, cmd_function operation, char *documentation);
 
 /* Add a new parameter */
 void add_param(char *name,
-               int *valp,
+               void *valp,
+               int type_size,
                char *doccumentation,
                setter_function setter);
 
@@ -77,6 +79,9 @@ int cmd_select(int nfds,
 /* Run command loop.  Non-null infile_name implies read commands from that file
  */
 bool run_console(char *infile_name);
+
+/* Helper function for param_list */
+int valp_deref(param_ptr plist);
 
 /* Callback function to complete command by linenoise */
 void completion(const char *buf, linenoiseCompletions *lc);
